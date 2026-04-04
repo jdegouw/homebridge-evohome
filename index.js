@@ -358,7 +358,13 @@ EvohomePlatform.prototype = {
       )
       .fail(function (err) {
         // tell me if login did not work!
-        that.log.error("Error during login:\n", err);
+		// Don't show stack trace, just the error instead. Keep full stack in debug
+		  that.log.error(
+			`Error during login: ${err && err.message ? err.message : String(err)}`
+		  );
+		  that.log.debug(
+			err
+		  );
         if (!this.childBridge) {
           callback([]);
         }
@@ -378,8 +384,11 @@ EvohomePlatform.prototype.renewSession = function () {
       that.log.debug("Renewed Honeywell API authentication token!");
     })
     .fail(function (err) {
+	  // Don't show stack trace, just the error instead. Keep full stack in debug
       that.log.error(
-        "Renewing Honeywell API authentication token failed:\n",
+        `Renewing Honeywell API authentication token failed: ${err && err.message ? err.message : String(err)}`
+      );
+      that.log.debug(
         err
       );
     });
@@ -461,10 +470,9 @@ EvohomePlatform.prototype.periodicUpdate = function () {
                                     oldCurrentTemp != newCurrentTemp &&
                                     service
                                   ) {
-                                    this.log.debug(
-                                      "Updating: " +
+                                    this.log(
                                         device.name +
-                                        " currentTempChange from: " +
+                                        (oldCurrentTemp < newCurrentTemp ? " temp increased from: " : " temp decreased from: ") +
                                         oldCurrentTemp +
                                         " to: " +
                                         newCurrentTemp
@@ -913,7 +921,7 @@ EvohomeThermostatAccessory.prototype = {
               // returns taskId if successful
             });
         } else {
-          that.log(
+          that.log.debug(
             "HEAT or COOL selected, previous state AUTO, HEAT or COOL. Doing nothing."
           );
         }
@@ -966,7 +974,7 @@ EvohomeThermostatAccessory.prototype = {
   setTargetTemperature: function (value, callback) {
     var that = this;
 
-    that.log("Request to set target temperature to " + value);
+    that.log.debug("Request to set target temperature to " + value);
 
     that.targetTemperateToSet = value;
     callback(null, Number(1));
