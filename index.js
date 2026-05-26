@@ -29,34 +29,34 @@ module.exports = function (homebridge) {
 
   FakeGatoHistoryService = require("fakegato-history")(homebridge);
 
-  // === MODERNE DEFINITIES ===
-  CustomCharacteristic.ValvePosition = class extends Characteristic {
+  // === MODERNE DEFINITIES (bulletproof) ===
+  CustomCharacteristic.ValvePosition = class extends homebridge.hap.Characteristic {
     constructor() {
       super("Valve position", "E863F12E-079E-48FF-8F27-9C2605A29F52");
       this.setProps({
-        format: Characteristic.Formats.UINT8,
-        unit: Characteristic.Units.PERCENTAGE,
-        perms: [Characteristic.Perms.READ, Characteristic.Perms.NOTIFY],
+        format: homebridge.hap.Characteristic.Formats.UINT8,
+        unit: homebridge.hap.Characteristic.Units.PERCENTAGE,
+        perms: [homebridge.hap.Characteristic.Perms.READ, homebridge.hap.Characteristic.Perms.NOTIFY],
       });
     }
   };
 
-  CustomCharacteristic.ProgramCommand = class extends Characteristic {
+  CustomCharacteristic.ProgramCommand = class extends homebridge.hap.Characteristic {
     constructor() {
       super("Program command", "E863F12C-079E-48FF-8F27-9C2605A29F52");
       this.setProps({
-        format: Characteristic.Formats.DATA,
-        perms: [Characteristic.Perms.WRITE, Characteristic.Perms.NOTIFY],
+        format: homebridge.hap.Characteristic.Formats.DATA,
+        perms: [homebridge.hap.Characteristic.Perms.WRITE, homebridge.hap.Characteristic.Perms.NOTIFY],
       });
     }
   };
 
-  CustomCharacteristic.ProgramData = class extends Characteristic {
+  CustomCharacteristic.ProgramData = class extends homebridge.hap.Characteristic {
     constructor() {
       super("Program data", "E863F12F-079E-48FF-8F27-9C2605A29F52");
       this.setProps({
-        format: Characteristic.Formats.DATA,
-        perms: [Characteristic.Perms.READ, Characteristic.Perms.NOTIFY],
+        format: homebridge.hap.Characteristic.Formats.DATA,
+        perms: [homebridge.hap.Characteristic.Perms.READ, homebridge.hap.Characteristic.Perms.NOTIFY],
       });
     }
   };
