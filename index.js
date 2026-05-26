@@ -14,7 +14,7 @@
 "use strict";
 
 var evohome = require("./lib/evohome.js");
-//var Service, Characteristic;
+var Service, Characteristic;
 var config;
 var FakeGatoHistoryService;
 //var inherits = require("util").inherits;
@@ -24,16 +24,15 @@ var CustomCharacteristic = {};
 
 
 module.exports = function (homebridge) {
-  const { Service, Characteristic } = homebridge.hap;
+  Service = homebridge.hap.Service;
+  Characteristic = homebridge.hap.Characteristic;
+
   FakeGatoHistoryService = require("fakegato-history")(homebridge);
 
-  // === MODERNE DEFINITIES (binnen dezelfde scope) ===
+  // === MODERNE DEFINITIES ===
   CustomCharacteristic.ValvePosition = class extends Characteristic {
     constructor() {
-      super(
-        "Valve position",
-        "E863F12E-079E-48FF-8F27-9C2605A29F52"
-      );
+      super("Valve position", "E863F12E-079E-48FF-8F27-9C2605A29F52");
       this.setProps({
         format: Characteristic.Formats.UINT8,
         unit: Characteristic.Units.PERCENTAGE,
@@ -44,10 +43,7 @@ module.exports = function (homebridge) {
 
   CustomCharacteristic.ProgramCommand = class extends Characteristic {
     constructor() {
-      super(
-        "Program command",
-        "E863F12C-079E-48FF-8F27-9C2605A29F52"
-      );
+      super("Program command", "E863F12C-079E-48FF-8F27-9C2605A29F52");
       this.setProps({
         format: Characteristic.Formats.DATA,
         perms: [Characteristic.Perms.WRITE, Characteristic.Perms.NOTIFY],
@@ -57,10 +53,7 @@ module.exports = function (homebridge) {
 
   CustomCharacteristic.ProgramData = class extends Characteristic {
     constructor() {
-      super(
-        "Program data",
-        "E863F12F-079E-48FF-8F27-9C2605A29F52"
-      );
+      super("Program data", "E863F12F-079E-48FF-8F27-9C2605A29F52");
       this.setProps({
         format: Characteristic.Formats.DATA,
         perms: [Characteristic.Perms.READ, Characteristic.Perms.NOTIFY],
