@@ -14,7 +14,7 @@
 "use strict";
 
 var evohome = require("./lib/evohome.js");
-var Service, Characteristic;
+//var Service, Characteristic;
 var config;
 var FakeGatoHistoryService;
 //var inherits = require("util").inherits;
@@ -24,51 +24,46 @@ var CustomCharacteristic = {};
 
 
 module.exports = function (homebridge) {
-   FakeGatoHistoryService = require("fakegato-history")(homebridge);
+  const { Service, Characteristic } = homebridge.hap;
+  FakeGatoHistoryService = require("fakegato-history")(homebridge);
 
-   Service = homebridge.hap.Service;
-  Characteristic = homebridge.hap.Characteristic;
-
-  // Veilige lokale referentie (lost scoping probleem op)
-  const LocalCharacteristic = Characteristic;
-
-  // === MODERNE DEFINITIES ===
-  CustomCharacteristic.ValvePosition = class extends LocalCharacteristic {
+  // === MODERNE DEFINITIES (binnen dezelfde scope) ===
+  CustomCharacteristic.ValvePosition = class extends Characteristic {
     constructor() {
       super(
         "Valve position",
         "E863F12E-079E-48FF-8F27-9C2605A29F52"
       );
       this.setProps({
-        format: LocalCharacteristic.Formats.UINT8,
-        unit: LocalCharacteristic.Units.PERCENTAGE,
-        perms: [LocalCharacteristic.Perms.READ, LocalCharacteristic.Perms.NOTIFY],
+        format: Characteristic.Formats.UINT8,
+        unit: Characteristic.Units.PERCENTAGE,
+        perms: [Characteristic.Perms.READ, Characteristic.Perms.NOTIFY],
       });
     }
   };
 
-  CustomCharacteristic.ProgramCommand = class extends LocalCharacteristic {
+  CustomCharacteristic.ProgramCommand = class extends Characteristic {
     constructor() {
       super(
         "Program command",
         "E863F12C-079E-48FF-8F27-9C2605A29F52"
       );
       this.setProps({
-        format: LocalCharacteristic.Formats.DATA,
-        perms: [LocalCharacteristic.Perms.WRITE, LocalCharacteristic.Perms.NOTIFY],
+        format: Characteristic.Formats.DATA,
+        perms: [Characteristic.Perms.WRITE, Characteristic.Perms.NOTIFY],
       });
     }
   };
 
-  CustomCharacteristic.ProgramData = class extends LocalCharacteristic {
+  CustomCharacteristic.ProgramData = class extends Characteristic {
     constructor() {
       super(
         "Program data",
         "E863F12F-079E-48FF-8F27-9C2605A29F52"
       );
       this.setProps({
-        format: LocalCharacteristic.Formats.DATA,
-        perms: [LocalCharacteristic.Perms.READ, LocalCharacteristic.Perms.NOTIFY],
+        format: Characteristic.Formats.DATA,
+        perms: [Characteristic.Perms.READ, Characteristic.Perms.NOTIFY],
       });
     }
   };
