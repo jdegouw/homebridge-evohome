@@ -26,46 +26,49 @@ var CustomCharacteristic = {};
 module.exports = function (homebridge) {
    FakeGatoHistoryService = require("fakegato-history")(homebridge);
 
-  Service = homebridge.hap.Service;
+   Service = homebridge.hap.Service;
   Characteristic = homebridge.hap.Characteristic;
 
-  // === MODERNE DEFINITIES (alleen hier) ===
-  CustomCharacteristic.ValvePosition = class extends Characteristic {
+  // Veilige lokale referentie (lost scoping probleem op)
+  const LocalCharacteristic = Characteristic;
+
+  // === MODERNE DEFINITIES ===
+  CustomCharacteristic.ValvePosition = class extends LocalCharacteristic {
     constructor() {
       super(
         "Valve position",
         "E863F12E-079E-48FF-8F27-9C2605A29F52"
       );
       this.setProps({
-        format: Characteristic.Formats.UINT8,
-        unit: Characteristic.Units.PERCENTAGE,
-        perms: [Characteristic.Perms.READ, Characteristic.Perms.NOTIFY],
+        format: LocalCharacteristic.Formats.UINT8,
+        unit: LocalCharacteristic.Units.PERCENTAGE,
+        perms: [LocalCharacteristic.Perms.READ, LocalCharacteristic.Perms.NOTIFY],
       });
     }
   };
 
-  CustomCharacteristic.ProgramCommand = class extends Characteristic {
+  CustomCharacteristic.ProgramCommand = class extends LocalCharacteristic {
     constructor() {
       super(
         "Program command",
         "E863F12C-079E-48FF-8F27-9C2605A29F52"
       );
       this.setProps({
-        format: Characteristic.Formats.DATA,
-        perms: [Characteristic.Perms.WRITE, Characteristic.Perms.NOTIFY],
+        format: LocalCharacteristic.Formats.DATA,
+        perms: [LocalCharacteristic.Perms.WRITE, LocalCharacteristic.Perms.NOTIFY],
       });
     }
   };
 
-  CustomCharacteristic.ProgramData = class extends Characteristic {
+  CustomCharacteristic.ProgramData = class extends LocalCharacteristic {
     constructor() {
       super(
         "Program data",
         "E863F12F-079E-48FF-8F27-9C2605A29F52"
       );
       this.setProps({
-        format: Characteristic.Formats.DATA,
-        perms: [Characteristic.Perms.READ, Characteristic.Perms.NOTIFY],
+        format: LocalCharacteristic.Formats.DATA,
+        perms: [LocalCharacteristic.Perms.READ, LocalCharacteristic.Perms.NOTIFY],
       });
     }
   };
