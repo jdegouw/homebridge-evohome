@@ -21,7 +21,16 @@ var FakeGatoHistoryService;
 const moment = require("moment");
 var CustomCharacteristic = {};
 
-CustomCharacteristic.ValvePosition = class extends Characteristic {
+
+
+module.exports = function (homebridge) {
+   FakeGatoHistoryService = require("fakegato-history")(homebridge);
+
+  Service = homebridge.hap.Service;
+  Characteristic = homebridge.hap.Characteristic;
+
+  // === MODERNE DEFINITIES (alleen hier) ===
+  CustomCharacteristic.ValvePosition = class extends Characteristic {
     constructor() {
       super(
         "Valve position",
@@ -60,55 +69,6 @@ CustomCharacteristic.ValvePosition = class extends Characteristic {
       });
     }
   };
-
-module.exports = function (homebridge) {
-  FakeGatoHistoryService = require("fakegato-history")(homebridge);
-
-  Service = homebridge.hap.Service;
-  Characteristic = homebridge.hap.Characteristic;
-
-  CustomCharacteristic.ValvePosition = function () {
-    Characteristic.call(
-      this,
-      "Valve position",
-      "E863F12E-079E-48FF-8F27-9C2605A29F52"
-    );
-    this.setProps({
-      format: Characteristic.Formats.UINT8,
-      unit: Characteristic.Units.PERCENTAGE,
-      perms: [Characteristic.Perms.READ, Characteristic.Perms.NOTIFY],
-    });
-    this.value = this.getDefaultValue();
-  };
-  inherits(CustomCharacteristic.ValvePosition, Characteristic);
-
-  CustomCharacteristic.ProgramCommand = function () {
-    Characteristic.call(
-      this,
-      "Program command",
-      "E863F12C-079E-48FF-8F27-9C2605A29F52"
-    );
-    this.setProps({
-      format: Characteristic.Formats.DATA,
-      perms: [Characteristic.Perms.WRITE, Characteristic.Perms.NOTIFY],
-    });
-    this.value = this.getDefaultValue();
-  };
-  inherits(CustomCharacteristic.ProgramCommand, Characteristic);
-
-  CustomCharacteristic.ProgramData = function () {
-    Characteristic.call(
-      this,
-      "Program data",
-      "E863F12F-079E-48FF-8F27-9C2605A29F52"
-    );
-    this.setProps({
-      format: Characteristic.Formats.DATA,
-      perms: [Characteristic.Perms.READ, Characteristic.Perms.NOTIFY],
-    });
-    this.value = this.getDefaultValue();
-  };
-  inherits(CustomCharacteristic.ProgramData, Characteristic);
 
   homebridge.registerPlatform("homebridge-evohome", "Evohome", EvohomePlatform);
 };
